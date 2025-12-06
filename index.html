@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PPV</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player/dist/controls.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/shaka-player/dist/shaka-player.ui.min.js"></script>
+    <script type="text/javascript">(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","t67ujucpqv");</script>
+    <style>html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden;background-color:#000;}#video-container{width:100vw;height:100vh;}video{width:100%;height:100%;}</style>
+</head>
+<body>
+    <div data-shaka-player-container id="video-container">
+        <video autoplay data-shaka-player id="video" poster=""></video>
+    </div>
+    <script>
+        const manifestUri = 'https://customer-hejomdji14cnemwu.cloudflarestream.com/446431a3b85c4524685de17aab5c3bae/manifest/video.mpd';
+        const videoElement=document.getElementById('video');const videoContainer=document.getElementById('video-container');function onPlayerErrorEvent(event){onPlayerError(event.detail);}function onPlayerError(error){console.error('Error code',error.code,'object',error);if(error.code===shaka.util.Error.Code.LOAD_FAILED_HTTP_ERROR||error.code===shaka.util.Error.Code.LOAD_FAILED_NO_RESPONSE||error.code===shaka.util.Error.Code.HTTP_ERROR){alert('Network error. Check browser console for details.');}else if(error.code===shaka.util.Error.Code.MANIFEST_LOAD_ERROR||error.code===shaka.util.Error.Code.MANIFEST_PARSE_ERROR){alert('Manifest error. Check URL and CORS headers, or if the manifest URL is expired.');}else{alert('Player error. Code: '+error.code);}}async function initPlayer(){shaka.polyfill.installAll();if(!shaka.Player.isBrowserSupported()){alert('Browser not supported.');return;}const player=new shaka.Player(videoElement);window.player=player;const ui=new shaka.ui.Overlay(player,videoContainer,videoElement);videoElement.volume=0.2;const config={drm:{clearKeys:{}},streaming:{bufferingGoal:60,rebufferingGoal:2,bufferBehind:30,useNativeHlsOnSafari:false},manifest:{dash:{ignoreMinBufferTime:true},hls:{enableLowLatencyMode:true,useFullSegmentsForStartTime:false}},abr:{defaultBandwidthEstimate:10000000,restrictions:{minHeight:0,maxHeight:Infinity,minBandwidth:0,maxBandwidth:Infinity}}};player.configure(config);const uiConfig={controlPanelElements:['play_pause','time_and_duration','mute','volume','spacer','overflow_menu','fullscreen'],seekBarColors:{base:'rgba(255,255,255,0.3)',buffered:'rgba(255,255,255,0.54)',played:'rgba(255,0,0,0.8)',live:'rgba(255,0,0,0.8)'}};ui.configure(uiConfig);try{await player.load(manifestUri,-10);videoElement.play().catch(e=>console.warn('Autoplay error:',e));}catch(error){onPlayerError(error);}}if(window.shaka){initPlayer();}else{document.addEventListener('shaka-ui-loaded',initPlayer);}</script>
+</body>
+</html>
